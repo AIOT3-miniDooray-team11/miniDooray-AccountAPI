@@ -1,4 +1,7 @@
 package com.nhnacadmey.minidoorayaccount.account.repository;
 
-public interface AccountRepository {
+import com.nhnacadmey.minidoorayaccount.account.entity.Account;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface AccountRepository extends JpaRepository<Account, Long> {
 }
