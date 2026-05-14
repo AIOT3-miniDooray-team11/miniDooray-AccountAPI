@@ -3,6 +3,7 @@ package com.nhnacadmey.minidoorayaccount.account.service.impl;
 import com.nhnacadmey.minidoorayaccount.account.dto.request.CreateAccountReq;
 import com.nhnacadmey.minidoorayaccount.account.dto.request.UpdateAccountReq;
 import com.nhnacadmey.minidoorayaccount.account.entity.Account;
+import com.nhnacadmey.minidoorayaccount.account.execption.AccountExistException;
 import com.nhnacadmey.minidoorayaccount.account.execption.AccountInvalidInputException;
 import com.nhnacadmey.minidoorayaccount.account.execption.AccountNotExistException;
 import com.nhnacadmey.minidoorayaccount.account.projection.LoginAccountProjection;
@@ -39,14 +40,14 @@ public class AccountServiceImpl implements AccountService {
 
         if(accountRepository.existsAccountByUserId(userId)){
             log.debug("[account service] 존재하는 계정입니다 - userId:{}", userId);
-            throw new AccountNotExistException("[account service] 존재하는 계정입니다");
+            throw new AccountExistException("[account service] 존재하는 계정입니다");
         }
     }
 
     @Override
     @Transactional(readOnly = true)
     public void isAccountById(long accountId) {
-        if(accountRepository.existsAccountById(accountId)){
+        if(!accountRepository.existsAccountById(accountId)){
             log.debug("[account service] 존재하지 않는 계정입니다 - id:{}", accountId);
             throw new AccountNotExistException("[account service] 존재하지 않는 계정입니다");
         }
