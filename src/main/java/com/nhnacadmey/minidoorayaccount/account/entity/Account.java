@@ -41,6 +41,7 @@ public class Account {
     private String userName;
 
     @Column
+    @Enumerated(EnumType.STRING)
     private UserStatus status;
 
     @Column(name = "created_at")
