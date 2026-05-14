@@ -1,6 +1,6 @@
-package com.nhnacadmey.minidoorayaccount.account.dto;
+package com.nhnacadmey.minidoorayaccount.account.dto.request;
 
-public record CreateAccountDto(
+public record UpdateAccountReq(
         String userId,
         String userPassword,
         String userEmail,

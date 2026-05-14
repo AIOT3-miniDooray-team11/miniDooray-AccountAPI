@@ -44,7 +44,7 @@ public class DeletedAccount {
         this.deletedAt = LocalDateTime.now();
     }
 
-    public DeletedAccount create(Account account) {
+    public static DeletedAccount create(Account account) {
         return new DeletedAccount(account.getUserId(), account.getUserPassword(), account.getUserEmail(), account.getUserName());
     }
 }

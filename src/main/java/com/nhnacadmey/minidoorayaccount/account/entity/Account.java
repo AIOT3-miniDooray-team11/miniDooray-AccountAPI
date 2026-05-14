@@ -1,6 +1,6 @@
 package com.nhnacadmey.minidoorayaccount.account.entity;
 
-import com.nhnacadmey.minidoorayaccount.account.dto.CreateAccountDto;
+import com.nhnacadmey.minidoorayaccount.account.dto.request.CreateAccountReq;
 import com.nhnacadmey.minidoorayaccount.account.execption.AccountInvalidInputException;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
@@ -52,10 +52,11 @@ public class Account {
         this.userPassword = userPassword;
         this.userEmail = userEmail;
         this.userName = userName;
+        this.status = UserStatus.ACTIVE;
         this.createdAT = LocalDateTime.now();
     }
 
-    public static Account created(CreateAccountDto dto){
+    public static Account created(CreateAccountReq dto){
         checkInputDto(dto);
         return new Account(dto.userId(), dto.userPassword(), dto.userEmail(), dto.userName());
     }
@@ -65,7 +66,7 @@ public class Account {
         String userPassword = null;
         String userEmail = null;
         String userName = null;
-        if(o instanceof CreateAccountDto dto){
+        if(o instanceof CreateAccountReq dto){
             userId = dto.userId();
             userPassword = dto.userPassword();
             userEmail = dto.userEmail();
@@ -112,5 +113,12 @@ public class Account {
             throw new AccountInvalidInputException("user-name : 잘못된 입력입니다");
         }
         this.userName = userName;
+    }
+
+    public void setStatus(UserStatus status) {
+        if(Objects.isNull(status)) {
+            throw new AccountInvalidInputException("status : 잘못된 값 주입");
+        }
+        this.status = status;
     }
 }
