@@ -18,6 +18,7 @@ public class AccountController {
     @GetMapping
     public ResponseEntity<LoginReqAccountResp> getAccountByUserId(@RequestParam("userId") String userId){
         LoginReqAccountResp response = accountFacade.getAccountByLoginId(userId);
+        response.accountId();
         return ResponseEntity.ok(response);
     }
 

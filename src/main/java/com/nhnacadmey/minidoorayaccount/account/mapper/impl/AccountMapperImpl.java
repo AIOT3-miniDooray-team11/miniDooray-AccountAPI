@@ -11,7 +11,8 @@ import org.springframework.stereotype.Component;
 public class AccountMapperImpl implements AccountMapper {
     @Override
     public LoginReqAccountResp toLoginReqAccountResp(LoginAccountProjection projection) {
-        return new LoginReqAccountResp(projection.id(), projection.userId(), projection.userPassword(), projection.status());
+        return new LoginReqAccountResp(projection.getId(), projection.getUserId(),
+                projection.getUserPassword(), projection.getStatus());
     }
 
     @Override

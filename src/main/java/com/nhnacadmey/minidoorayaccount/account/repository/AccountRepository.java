@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
-    @Query("SELECT a.id, a.userId, a.userPassword, a.status FROM Account a WHERE a.userId = ?1")
+    @Query("SELECT a.id id, a.userId userId, a.userPassword userPassword, a.status status FROM Account a WHERE a.userId = ?1")
     LoginAccountProjection findLoginAccountByUserId(String userId);
 
     boolean existsAccountByUserId(String userId);
