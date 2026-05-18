@@ -14,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Objects;
 
 @Slf4j
@@ -71,6 +72,11 @@ public class AccountServiceImpl implements AccountService {
     @Transactional(readOnly = true)
     public Account getAccountById(long accountId) {
         return accountRepository.findAccountById(accountId);
+    }
+
+    @Override
+    public List<Account> getAccountsByIds(List<Long> accountIds) {
+        return accountRepository.findAllByIdIn(accountIds);
     }
 
     @Override

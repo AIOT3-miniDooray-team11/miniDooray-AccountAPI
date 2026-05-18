@@ -1,7 +1,9 @@
 package com.nhnacadmey.minidoorayaccount.controller;
 
+import com.nhnacadmey.minidoorayaccount.account.dto.request.AccountListReq;
 import com.nhnacadmey.minidoorayaccount.account.dto.request.CreateAccountReq;
 import com.nhnacadmey.minidoorayaccount.account.dto.request.UpdateAccountReq;
+import com.nhnacadmey.minidoorayaccount.account.dto.response.AccountListResp;
 import com.nhnacadmey.minidoorayaccount.account.dto.response.AccountResp;
 import com.nhnacadmey.minidoorayaccount.account.dto.response.LoginReqAccountResp;
 import com.nhnacadmey.minidoorayaccount.account.service.AccountFacade;
@@ -18,7 +20,6 @@ public class AccountController {
     @GetMapping
     public ResponseEntity<LoginReqAccountResp> getAccountByUserId(@RequestParam("userId") String userId){
         LoginReqAccountResp response = accountFacade.getAccountByLoginId(userId);
-        response.accountId();
         return ResponseEntity.ok(response);
     }
 
@@ -26,6 +27,12 @@ public class AccountController {
     public ResponseEntity<AccountResp> getAccountById(@PathVariable long id) {
         AccountResp account = accountFacade.getAccountById(id);
         return ResponseEntity.ok(account);
+    }
+
+    @GetMapping
+    public ResponseEntity<AccountListResp> getAccountList(@RequestBody AccountListReq req) {
+        AccountListResp response = null;
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
