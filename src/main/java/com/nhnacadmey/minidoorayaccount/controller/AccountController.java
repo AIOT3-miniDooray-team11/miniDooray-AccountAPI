@@ -18,7 +18,7 @@ public class AccountController {
     private final AccountFacade accountFacade;
 
     @GetMapping("/login")
-    public ResponseEntity<LoginReqAccountResp> getAccountByUserId(@RequestParam("userId") String userId){
+    public ResponseEntity<LoginReqAccountResp> getAccountByLoginId(@RequestParam("userId") String userId){
         LoginReqAccountResp response = accountFacade.getAccountByLoginId(userId);
         return ResponseEntity.ok(response);
     }
@@ -30,12 +30,18 @@ public class AccountController {
     }
 
     @GetMapping
+    public ResponseEntity<AccountResp> getAccountByUserId(@RequestParam("userId") String userId) {
+        AccountResp account = accountFacade.getAccountByUserId(userId);
+        return ResponseEntity.ok(account);
+    }
+
+    @PostMapping
     public ResponseEntity<AccountListResp> getAccountList(@RequestBody AccountListReq req) {
         AccountListResp response = accountFacade.getAccountByIds(req.accountIdList());
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
+    @PostMapping("/register")
     public ResponseEntity<Void> registerAccount(@RequestBody CreateAccountReq req){
         accountFacade.registerAccount(req);
         return ResponseEntity.ok().build();

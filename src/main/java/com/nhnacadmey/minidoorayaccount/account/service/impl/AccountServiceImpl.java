@@ -80,6 +80,11 @@ public class AccountServiceImpl implements AccountService {
     }
 
     @Override
+    public Account getAccountByUserId(String userId) {
+        return accountRepository.findAccountByUserId(userId);
+    }
+
+    @Override
     @Transactional
     public void registerAccount(CreateAccountReq req) {
         Account account = Account.created(req);

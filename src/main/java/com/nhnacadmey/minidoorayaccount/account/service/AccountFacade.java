@@ -12,6 +12,7 @@ public interface AccountFacade {
     LoginReqAccountResp getAccountByLoginId(String loginId);
     AccountResp getAccountById(long accountId);
     AccountListResp getAccountByIds(List<Long> accountIds);
+    AccountResp getAccountByUserId(String userId);
     void registerAccount(CreateAccountReq req);
     void updateAccount(long accountId, UpdateAccountReq req);
     void deleteAccount(long accountId);
