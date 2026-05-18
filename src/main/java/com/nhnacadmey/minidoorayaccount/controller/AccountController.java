@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.*;
 public class AccountController {
     private final AccountFacade accountFacade;
 
-    @GetMapping
+    @GetMapping("/login")
     public ResponseEntity<LoginReqAccountResp> getAccountByUserId(@RequestParam("userId") String userId){
         LoginReqAccountResp response = accountFacade.getAccountByLoginId(userId);
         return ResponseEntity.ok(response);
@@ -31,7 +31,7 @@ public class AccountController {
 
     @GetMapping
     public ResponseEntity<AccountListResp> getAccountList(@RequestBody AccountListReq req) {
-        AccountListResp response = null;
+        AccountListResp response = accountFacade.getAccountByIds(req.accountIdList());
         return ResponseEntity.ok(response);
     }
 
