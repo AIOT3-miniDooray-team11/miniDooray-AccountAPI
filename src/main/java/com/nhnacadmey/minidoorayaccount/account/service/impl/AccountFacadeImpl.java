@@ -51,6 +51,14 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
+    public AccountResp getAccountByUserId(String userId) {
+        accountService.isAccountByUserId(userId);
+        Account account = accountService.getAccountByUserId(userId);
+
+        return accountMapper.toAccountResp(account);
+    }
+
+    @Override
     @Transactional
     public void registerAccount(CreateAccountReq req) {
         accountService.isNotAccountByUserId(req.userId());

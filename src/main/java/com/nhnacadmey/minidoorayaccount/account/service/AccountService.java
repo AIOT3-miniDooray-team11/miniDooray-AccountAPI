@@ -14,6 +14,7 @@ public interface AccountService {
     LoginAccountProjection getAccountProjectionByUserId(String userId);
     Account getAccountById(long accountId);
     List<Account> getAccountsByIds(List<Long> accountIds);
+    Account getAccountByUserId(String userId);
     void registerAccount(CreateAccountReq req);
     void updateAccount(long accountId, UpdateAccountReq req);
     void deleteAccount(Account account);
