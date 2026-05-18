@@ -2,6 +2,7 @@ package com.nhnacadmey.minidoorayaccount.account.service.impl;
 
 import com.nhnacadmey.minidoorayaccount.account.dto.request.CreateAccountReq;
 import com.nhnacadmey.minidoorayaccount.account.dto.request.UpdateAccountReq;
+import com.nhnacadmey.minidoorayaccount.account.dto.response.AccountListResp;
 import com.nhnacadmey.minidoorayaccount.account.dto.response.AccountResp;
 import com.nhnacadmey.minidoorayaccount.account.dto.response.LoginReqAccountResp;
 import com.nhnacadmey.minidoorayaccount.account.entity.Account;
@@ -14,6 +15,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Component
 public class AccountFacadeImpl implements AccountFacade {
@@ -23,7 +26,7 @@ public class AccountFacadeImpl implements AccountFacade {
     private final AccountMapper accountMapper;
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public LoginReqAccountResp getAccountByLoginId(String loginId) {
         accountService.isAccountByUserId(loginId);
         LoginAccountProjection projection = accountService.getAccountProjectionByUserId(loginId);
@@ -32,12 +35,19 @@ public class AccountFacadeImpl implements AccountFacade {
     }
 
     @Override
-    @Transactional
+    @Transactional(readOnly = true)
     public AccountResp getAccountById(long accountId) {
         accountService.isAccountById(accountId);
         Account account = accountService.getAccountById(accountId);
 
         return accountMapper.toAccountResp(account);
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public AccountListResp getAccountByIds(List<Long> accountIds) {
+        List<Account> accounts = accountService.getAccountsByIds(accountIds);
+        return accountMapper.toAccountListResp(accounts);
     }
 
     @Override
