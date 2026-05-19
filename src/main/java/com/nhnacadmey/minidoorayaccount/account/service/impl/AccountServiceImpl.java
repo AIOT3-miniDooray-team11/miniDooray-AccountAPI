@@ -11,6 +11,7 @@ import com.nhnacadmey.minidoorayaccount.account.repository.AccountRepository;
 import com.nhnacadmey.minidoorayaccount.account.service.AccountService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,8 @@ import java.util.Objects;
 @Service
 public class AccountServiceImpl implements AccountService {
     private final AccountRepository accountRepository;
+
+    private final PasswordEncoder passwordEncoder;
 
     @Override
     @Transactional(readOnly = true)
@@ -87,6 +90,8 @@ public class AccountServiceImpl implements AccountService {
     @Override
     @Transactional
     public void registerAccount(CreateAccountReq req) {
+        String password = passwordEncoder.encode(req.userPassword());
+        req = new CreateAccountReq(req.userId(), password, req.userEmail(), req.userName());
         Account account = Account.created(req);
         accountRepository.save(account);
     }
@@ -95,6 +100,8 @@ public class AccountServiceImpl implements AccountService {
     @Transactional
     public void updateAccount(long accountId, UpdateAccountReq req) {
         Account account = accountRepository.findAccountById(accountId);
+        String password = passwordEncoder.encode(req.userPassword());
+        req = new UpdateAccountReq(req.userId(), password, req.userEmail(), req.userName());
 
         if(!account.getUserId().equals(req.userId())){
             account.setUserId(req.userId());
