@@ -66,11 +66,11 @@ public class Account {
         String userPassword = null;
         String userEmail = null;
         String userName = null;
-        if(o instanceof CreateAccountReq dto){
-            userId = dto.userId();
-            userPassword = dto.userPassword();
-            userEmail = dto.userEmail();
-            userName = dto.userName();
+        if(o instanceof CreateAccountReq(String userId1, String password, String email, String name)){
+            userId = userId1;
+            userPassword = password;
+            userEmail = email;
+            userName = name;
         }
 
         if(Objects.isNull(userId) || userId.isBlank()) {

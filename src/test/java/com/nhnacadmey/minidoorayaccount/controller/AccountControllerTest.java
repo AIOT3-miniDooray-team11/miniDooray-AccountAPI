@@ -128,15 +128,15 @@ class AccountControllerTest {
     // ── POST /register ─────────────────────────────────────────────────
 
     @Test
-    @DisplayName("POST /register - 계정 등록 성공 200")
-    void registerAccount_returns200() throws Exception {
+    @DisplayName("POST /register - 계정 등록 성공 201")
+    void registerAccount_returns201() throws Exception {
         CreateAccountReq req = new CreateAccountReq("user1", "pass1", "user1@test.com", "홍길동");
         doNothing().when(accountFacade).registerAccount(req);
 
         mockMvc.perform(post(BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         verify(accountFacade).registerAccount(req);
     }
@@ -156,15 +156,15 @@ class AccountControllerTest {
     // ── PUT /{id} ──────────────────────────────────────────────────────
 
     @Test
-    @DisplayName("PUT /{id} - 계정 수정 성공 200")
-    void updateAccount_returns200() throws Exception {
+    @DisplayName("PUT /{id} - 계정 수정 성공 204")
+    void updateAccount_returns204() throws Exception {
         UpdateAccountReq req = new UpdateAccountReq("newUser", "newPass", "new@test.com", "새이름");
         doNothing().when(accountFacade).updateAccount(1L, req);
 
         mockMvc.perform(put(BASE_URL + "/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(accountFacade).updateAccount(1L, req);
     }
@@ -185,12 +185,12 @@ class AccountControllerTest {
     // ── DELETE /{id} ───────────────────────────────────────────────────
 
     @Test
-    @DisplayName("DELETE /{id} - 계정 삭제 성공 200")
-    void deleteAccount_returns200() throws Exception {
+    @DisplayName("DELETE /{id} - 계정 삭제 성공 204")
+    void deleteAccount_returns204() throws Exception {
         doNothing().when(accountFacade).deleteAccount(1L);
 
         mockMvc.perform(delete(BASE_URL + "/1"))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         verify(accountFacade).deleteAccount(1L);
     }
