@@ -8,6 +8,7 @@ import com.nhnacadmey.minidoorayaccount.account.dto.response.AccountResp;
 import com.nhnacadmey.minidoorayaccount.account.dto.response.LoginReqAccountResp;
 import com.nhnacadmey.minidoorayaccount.account.service.AccountFacade;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,18 +45,18 @@ public class AccountController {
     @PostMapping("/register")
     public ResponseEntity<Void> registerAccount(@RequestBody CreateAccountReq req){
         accountFacade.registerAccount(req);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateAccount(@PathVariable long id, @RequestBody UpdateAccountReq req){
         accountFacade.updateAccount(id, req);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteAccountById(@PathVariable long id) {
         accountFacade.deleteAccount(id);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.noContent().build();
     }
 }
