@@ -10,8 +10,12 @@
 
 | HTTP Status | 설명 |
 |-------------|------|
-| 200 OK | 요청 성공 |
-| 400 Bad Request | 입력값 오류, 중복 계정, 계정 없음 등 비즈니스 예외 |
+| 200 OK | 조회 성공 |
+| 201 Created | 리소스 생성 성공 |
+| 204 No Content | 수정/삭제 성공 (응답 본문 없음) |
+| 400 Bad Request | 입력값 오류 또는 형식 불일치 |
+| 404 Not Found | 존재하지 않는 계정 |
+| 409 Conflict | 이미 존재하는 계정 |
 
 ---
 
@@ -51,7 +55,7 @@ GET /account-api/v1/accounts/login?userId={userId}
 
 | 상황 | Status |
 |------|--------|
-| 존재하지 않는 userId | 400 |
+| 존재하지 않는 userId | 404 |
 
 ---
 
@@ -93,7 +97,7 @@ GET /account-api/v1/accounts/{id}
 
 | 상황 | Status |
 |------|--------|
-| 존재하지 않는 id | 400 |
+| 존재하지 않는 id | 404 |
 
 ---
 
@@ -117,7 +121,7 @@ GET /account-api/v1/accounts?userId={userId}
 
 | 상황 | Status |
 |------|--------|
-| 존재하지 않는 userId | 400 |
+| 존재하지 않는 userId | 404 |
 
 ---
 
@@ -196,7 +200,7 @@ POST /account-api/v1/accounts/register
 | userEmail | O | String | max 50, 이메일 형식 | 이메일 |
 | userName | O | String | max 50, 공백 불가 | 이름 |
 
-### 응답 (200 OK)
+### 응답 (201 Created)
 
 응답 본문 없음
 
@@ -204,7 +208,7 @@ POST /account-api/v1/accounts/register
 
 | 상황 | Status |
 |------|--------|
-| 이미 존재하는 userId | 400 |
+| 이미 존재하는 userId | 409 |
 | 필수 입력값 누락 또는 공백 | 400 |
 | 이메일 형식 불일치 | 400 |
 
@@ -240,7 +244,7 @@ PUT /account-api/v1/accounts/{id}
 | userEmail | O | String | max 50, 이메일 형식 | 변경할 이메일 |
 | userName | O | String | max 50, 공백 불가 | 변경할 이름 |
 
-### 응답 (200 OK)
+### 응답 (204 No Content)
 
 응답 본문 없음
 
@@ -248,7 +252,7 @@ PUT /account-api/v1/accounts/{id}
 
 | 상황 | Status |
 |------|--------|
-| 존재하지 않는 id | 400 |
+| 존재하지 않는 id | 404 |
 | 필수 입력값 누락 또는 공백 | 400 |
 
 ---
@@ -267,7 +271,7 @@ DELETE /account-api/v1/accounts/{id}
 |----------|------|------|------|
 | id | O | Long | 계정 고유 번호 |
 
-### 응답 (200 OK)
+### 응답 (204 No Content)
 
 응답 본문 없음
 
@@ -275,7 +279,7 @@ DELETE /account-api/v1/accounts/{id}
 
 | 상황 | Status |
 |------|--------|
-| 존재하지 않는 id | 400 |
+| 존재하지 않는 id | 404 |
 
 ---
 
