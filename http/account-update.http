@@ -1,0 +1,23 @@
+### 계정 수정
+PUT {{host}}{{base_path}}/1
+Content-Type: application/json
+
+{
+  "userId": "john_doe_updated",
+  "userPassword": "newpassword123!",
+  "userEmail": "john_new@example.com",
+  "userName": "John Updated"
+}
+
+###
+
+### 계정 수정 - 존재하지 않는 ID (400 예상)
+PUT {{host}}{{base_path}}/999
+Content-Type: application/json
+
+{
+  "userId": "ghost_user",
+  "userPassword": "password123!",
+  "userEmail": "ghost@example.com",
+  "userName": "Ghost"
+}

@@ -1,0 +1,22 @@
+### 로그인용 계정 조회 (Auth API 용)
+GET {{host}}{{base_path}}/login?userId=john_doe
+
+###
+
+### ID로 계정 단건 조회
+GET {{host}}{{base_path}}/1
+
+###
+
+### userId로 계정 조회
+GET {{host}}{{base_path}}?userId=john_doe
+
+###
+
+### 계정 목록 조회 (복수 ID)
+POST {{host}}{{base_path}}
+Content-Type: application/json
+
+{
+  "accountIdList": [1, 2, 3]
+}

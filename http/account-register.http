@@ -1,0 +1,36 @@
+### 계정 등록
+POST {{host}}{{base_path}}/register
+Content-Type: application/json
+
+{
+  "userId": "john_doe",
+  "userPassword": "password123!",
+  "userEmail": "john@example.com",
+  "userName": "John Doe"
+}
+
+###
+
+### 계정 등록 - 필수값 누락 (400 예상)
+POST {{host}}{{base_path}}/register
+Content-Type: application/json
+
+{
+  "userId": "",
+  "userPassword": "password123!",
+  "userEmail": "john@example.com",
+  "userName": "John Doe"
+}
+
+###
+
+### 계정 등록 - 이메일 형식 오류 (400 예상)
+POST {{host}}{{base_path}}/register
+Content-Type: application/json
+
+{
+  "userId": "jane_doe",
+  "userPassword": "password123!",
+  "userEmail": "invalid-email",
+  "userName": "Jane Doe"
+}
