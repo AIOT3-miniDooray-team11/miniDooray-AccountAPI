@@ -1,0 +1,7 @@
+### 계정 삭제
+DELETE {{host}}{{base_path}}/1
+
+###
+
+### 계정 삭제 - 존재하지 않는 ID (400 예상)
+DELETE {{host}}{{base_path}}/999
