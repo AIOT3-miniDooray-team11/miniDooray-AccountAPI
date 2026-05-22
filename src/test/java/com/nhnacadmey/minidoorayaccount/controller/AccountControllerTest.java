@@ -59,13 +59,13 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("GET /login - 존재하지 않는 계정 → 400")
-    void getAccountByLoginId_notExist_returns400() throws Exception {
+    @DisplayName("GET /login - 존재하지 않는 계정 → 404")
+    void getAccountByLoginId_notExist_returns404() throws Exception {
         when(accountFacade.getAccountByLoginId("ghost"))
                 .thenThrow(new AccountNotExistException("존재하지 않는 계정"));
 
         mockMvc.perform(get(BASE_URL + "/login").param("userId", "ghost"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     // ── GET /{id} ──────────────────────────────────────────────────────
@@ -84,13 +84,13 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("GET /{id} - 존재하지 않는 id → 400")
-    void getAccountById_notExist_returns400() throws Exception {
+    @DisplayName("GET /{id} - 존재하지 않는 id → 404")
+    void getAccountById_notExist_returns404() throws Exception {
         when(accountFacade.getAccountById(999L))
                 .thenThrow(new AccountNotExistException("존재하지 않는 계정"));
 
         mockMvc.perform(get(BASE_URL + "/999"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     // ── GET /?userId= ──────────────────────────────────────────────────
@@ -142,15 +142,15 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("POST /register - 중복 계정 → 400")
-    void registerAccount_duplicate_returns400() throws Exception {
+    @DisplayName("POST /register - 중복 계정 → 409")
+    void registerAccount_duplicate_returns409() throws Exception {
         CreateAccountReq req = new CreateAccountReq("user1", "pass1", "user1@test.com", "홍길동");
         doThrow(new AccountExistException("존재하는 계정")).when(accountFacade).registerAccount(req);
 
         mockMvc.perform(post(BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
     }
 
     // ── PUT /{id} ──────────────────────────────────────────────────────
@@ -170,8 +170,8 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("PUT /{id} - 존재하지 않는 계정 수정 → 400")
-    void updateAccount_notExist_returns400() throws Exception {
+    @DisplayName("PUT /{id} - 존재하지 않는 계정 수정 → 404")
+    void updateAccount_notExist_returns404() throws Exception {
         UpdateAccountReq req = new UpdateAccountReq("newUser", "newPass", "new@test.com", "새이름");
         doThrow(new AccountNotExistException("존재하지 않는 계정"))
                 .when(accountFacade).updateAccount(999L, req);
@@ -179,7 +179,7 @@ class AccountControllerTest {
         mockMvc.perform(put(BASE_URL + "/999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     // ── DELETE /{id} ───────────────────────────────────────────────────
@@ -196,12 +196,12 @@ class AccountControllerTest {
     }
 
     @Test
-    @DisplayName("DELETE /{id} - 존재하지 않는 계정 삭제 → 400")
-    void deleteAccount_notExist_returns400() throws Exception {
+    @DisplayName("DELETE /{id} - 존재하지 않는 계정 삭제 → 404")
+    void deleteAccount_notExist_returns404() throws Exception {
         doThrow(new AccountNotExistException("존재하지 않는 계정"))
                 .when(accountFacade).deleteAccount(999L);
 
         mockMvc.perform(delete(BASE_URL + "/999"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 }

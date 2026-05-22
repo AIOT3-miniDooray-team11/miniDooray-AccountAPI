@@ -62,7 +62,7 @@ class AccountIntegrationTest {
         mockMvc.perform(post(BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         Account saved = accountRepository.findAccountByUserId("user1");
         assertThat(saved).isNotNull();
@@ -70,19 +70,19 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("[통합] 동일 userId 중복 등록 → 400")
-    void registerAccount_duplicate_returns400() throws Exception {
+    @DisplayName("[통합] 동일 userId 중복 등록 → 409")
+    void registerAccount_duplicate_returns409() throws Exception {
         CreateAccountReq req = new CreateAccountReq("user1", "pass1", "user1@test.com", "홍길동");
 
         mockMvc.perform(post(BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
 
         mockMvc.perform(post(BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isConflict());
     }
 
     // ── 계정 조회 ──────────────────────────────────────────────────────
@@ -99,10 +99,10 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("[통합] 로그인용 계정 조회 - 없는 userId → 400")
-    void getAccountByLoginId_notExist_returns400() throws Exception {
+    @DisplayName("[통합] 로그인용 계정 조회 - 없는 userId → 404")
+    void getAccountByLoginId_notExist_returns404() throws Exception {
         mockMvc.perform(get(BASE_URL + "/login").param("userId", "ghost"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -118,10 +118,10 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("[통합] id로 계정 조회 - 없는 id → 400")
-    void getAccountById_notExist_returns400() throws Exception {
+    @DisplayName("[통합] id로 계정 조회 - 없는 id → 404")
+    void getAccountById_notExist_returns404() throws Exception {
         mockMvc.perform(get(BASE_URL + "/9999"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     @Test
@@ -164,7 +164,7 @@ class AccountIntegrationTest {
         mockMvc.perform(put(BASE_URL + "/" + saved.getId())
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         Account updated = accountRepository.findAccountById(saved.getId());
         assertThat(updated.getUserName()).isEqualTo("새이름");
@@ -172,14 +172,14 @@ class AccountIntegrationTest {
     }
 
     @Test
-    @DisplayName("[통합] 계정 수정 - 없는 id → 400")
-    void updateAccount_notExist_returns400() throws Exception {
+    @DisplayName("[통합] 계정 수정 - 없는 id → 404")
+    void updateAccount_notExist_returns404() throws Exception {
         UpdateAccountReq req = new UpdateAccountReq("user1", "pass1", "user1@test.com", "홍길동");
 
         mockMvc.perform(put(BASE_URL + "/9999")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     // ── 계정 삭제 ──────────────────────────────────────────────────────
@@ -191,17 +191,17 @@ class AccountIntegrationTest {
         Account saved = accountRepository.findAccountByUserId("user1");
 
         mockMvc.perform(delete(BASE_URL + "/" + saved.getId()))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
 
         assertThat(accountRepository.existsAccountByUserId("user1")).isFalse();
         assertThat(deletedAccountRepository.count()).isEqualTo(1);
     }
 
     @Test
-    @DisplayName("[통합] 계정 삭제 - 없는 id → 400")
-    void deleteAccount_notExist_returns400() throws Exception {
+    @DisplayName("[통합] 계정 삭제 - 없는 id → 404")
+    void deleteAccount_notExist_returns404() throws Exception {
         mockMvc.perform(delete(BASE_URL + "/9999"))
-                .andExpect(status().isBadRequest());
+                .andExpect(status().isNotFound());
     }
 
     // ── helper ────────────────────────────────────────────────────────
@@ -212,6 +212,6 @@ class AccountIntegrationTest {
         mockMvc.perform(post(BASE_URL + "/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(req)))
-                .andExpect(status().isOk());
+                .andExpect(status().isCreated());
     }
 }
